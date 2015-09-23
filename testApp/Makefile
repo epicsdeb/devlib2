@@ -8,25 +8,15 @@ include $(TOP)/configure/CONFIG
 #=============================
 # Build the IOC application
 
-LIBRARY_IOC = epicspci
+PROD_LIBS += Com
 
-USR_INCLUDES += -I../os/$(OS_CLASS)
+TESTPROD_IOC += pcitest
+TESTS += pcitest
 
-DBD += epicspci.dbd
+pcitest_SRCS += pcitest.c
+pcitest_LIBS += epicspci
 
-INC += devLibPCI.h
-INC += devLibPCIImpl.h
-
-epicspci_SRCS += devLibPCI.c
-epicspci_SRCS += devLibPCIStrings.c
-
-epicspci_SRCS_RTEMS += osdPciShared.c
-epicspci_SRCS_vxWorks += osdPciShared.c
-
-epicspci_SRCS += devLibPCIOSD.c
-epicspci_SRCS += pcish.c
-
-epicspci_LIBS += Com
+TESTSCRIPTS_HOST += $(TESTS:%=%.t)
 
 #===========================
 

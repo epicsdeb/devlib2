@@ -12,20 +12,20 @@ library (devLib v1) found in the 3.14.x series.
 The v2 library is an overlay and extension to the v1 library and
 not a replacement.
 It is planned that the v2 library will be merged with the v1 library
-for the 3.15.x series.
+for the 3.16.x series.
 After that point devlib2 will continue to exist as a location for backports
-and bug fixes for the 3.14.x series.
+and bug fixes for the 3.14.x and 3.15.x series.
 
 @section whereis Source
 
 Releases can be found at @url http://sourceforge.net/projects/epics/files/devlib2/
 
 This module is versioned with Mercurial and can be viewed at
-@url http://epics.hg.sourceforge.net/hgweb/epics/devlib2/
+@url https://github.com/epics-modules/devlib2
 
 Or checked out with
 
-hg clone http://epics.hg.sourceforge.net:8000/hgroot/epics/devlib2
+git clone https://github.com/epics-modules/devlib2.git
 
 The canonical version of this page is @url http://epics.sourceforge.net/devlib2/
 
@@ -78,6 +78,50 @@ the width and order of accesses.
 
 @section changelog Changelog
 
+@subsection ver26 2.6 (May 2015)
+
+@li VCS repository moved to github.com
+@li Increment API version to 1.2 (was 1.0)
+@li epicsMMIO.h included in EPICS Base 3.15.1, not installed by this module.
+
+Work by Andrew Johnson
+
+@li Import support for vxWorks 5.5 on m68k and powerpc from EPICS Base.
+
+Work by Till Straumann
+
+@li Add PCI Config space access functions devPCIConfigRead##() and devPCIConfigWrite##()
+@li Add devPCIEnableInterrupt() and devPCIDisableInterrupt().
+    - Linux: invoke the UIO irqcontrol callback function with a 1 or 0.
+    - vxWorks: call intEnable or intDisable (enabled by default). (Dirk Zimoch)
+
+Work by Dirk Zimoch
+
+@li Rework of the Linux PCI bus scan to support PCI domains.
+    Previously domain 0 was used implicitly.
+@li Rework of the vxWorks/RTEMS PCI bus scan to allow wildcards in device search.
+    This allows devPCIShow for all PCI devices like in Linux.
+@li Fixes for 64 bit BARs.
+@li vxWorks: use BAR address directly if sysBusToLocalAdrs does not support PCI.
+@li Changes in devPCIShow to get nicer output.
+
+Work by Michael Davidsaver
+
+@li Add the pciconfread() iocsh function.
+@li devLibPCIRegisterDriver()  is now a macro wrapping devLibPCIRegisterDriver2()
+    which performs a consistency check on the size of the devLibPCI structure.
+@li provide bswap16() and bswap32() for RTEMS PPC targets.  Previously omitted.
+@li Change name format of Linux user "ISR" thread to include PCI BDF.
+
+
+@subsection ver25 2.5 (May 2014)
+
+@li Linux: possible string corruption in vallocPrintf()
+      Found by Till Straumann
+@li vxWorks: lookup symbols including sysBusToLocalAdrs at runtime.
+      Work by Eric and Dirk Zimoch
+@li RTEMS: Select no-op MMIO implementation for m68k (no special handling required)
+
 @subsection ver24 2.4 (Oct. 2012)
 
 @li Remove C++ style comments from epicsMMIODef.h and devcsr.h
@@ -118,6 +162,7 @@ the width and order of accesses.
 
 @author Michael Davidsaver <mdavidsaver@bnl.gov>
 @author Till Straumann <strauman@slac.stanford.edu>
+@author Dirk Zimoch <dirk.zimoch@psi.ch>
 
 */
 
